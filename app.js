@@ -81,7 +81,7 @@ function getPrioridadeClass(prioridade) {
 
 function getStatusClass(status) {
     return status === "Pendente" ? "pendente" :
-           status === "Em Progresso" ? "em_progresso" : "concluida";
+        status === "Em Progresso" ? "em_progresso" : "concluida";
 }
 
 /* ---------- Persistência ---------- */
@@ -137,7 +137,7 @@ function toggleStatusTarefa(idx) {
     if (idx < 0 || idx >= tarefas.length) return;
     const tarefa = tarefas[idx];
     const status = tarefa.status;
-    
+
     if (status === "Pendente") {
         tarefa.status = "Em Progresso";
     } else if (status === "Em Progresso") {
@@ -145,7 +145,7 @@ function toggleStatusTarefa(idx) {
     } else {
         tarefa.status = "Pendente";
     }
-    
+
     salvar();
 }
 
@@ -174,8 +174,8 @@ function aplicarFiltrosOrdenacao(lista) {
     // Filtro de texto
     if (filtroTexto.trim()) {
         const t = filtroTexto.trim().toLowerCase();
-        out = out.filter((tarefa) => 
-            tarefa.titulo.toLowerCase().includes(t) || 
+        out = out.filter((tarefa) =>
+            tarefa.titulo.toLowerCase().includes(t) ||
             tarefa.descricao.toLowerCase().includes(t)
         );
     }
@@ -234,10 +234,10 @@ function renderizarLista() {
         const idxReal = tarefas.indexOf(tarefa);
         const dias = diffDias(tarefa.dataLimite);
         const diasTxt = dias === null ? "-" : (dias < 0 ? `Vencida (${Math.abs(dias)}d)` : `${dias}d`);
-        
+
         // Badge de status (cor baseada no status)
         const statusBadge = criarStatusBadge(tarefa.status);
-        
+
         const row = document.createElement("div");
         row.className = "row-item";
 

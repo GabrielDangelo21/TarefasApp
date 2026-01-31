@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c5cff"/>
+      <stop offset="100%" style="stop-color:#23c0ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="40" fill="url(#grad)"/>
+  
+  <!-- Checklist icon -->
+  <rect x="35" y="25" width="110" height="130" rx="15" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  
+  <!-- Check items -->
+  <circle cx="62" cy="55" r="12" fill="#2dd4bf"/>
+  <path d="M57 55 L61 59 L67 52" stroke="#0b1020" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="85" y="48" width="45" height="14" rx="5" fill="rgba(255,255,255,0.5)"/>
+  
+  <circle cx="62" cy="85" r="12" fill="#fbbf24"/>
+  <path d="M57 85 L61 89 L67 82" stroke="#0b1020" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="85" y="78" width="45" height="14" rx="5" fill="rgba(255,255,255,0.5)"/>
+  
+  <circle cx="62" cy="115" r="12" fill="rgba(255,255,255,0.3)" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+  <rect x="85" y="108" width="45" height="14" rx="5" fill="rgba(255,255,255,0.3)"/>
+</svg>
