@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tarefas • Gerenciador de Atividades</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+</head>
+
+<body>
+    <div class="app">
+        <header class="topbar">
+            <div>
+                <h1>Tarefas</h1>
+                <p class="subtitle">Gerencie suas tarefas, priorize e organize-se.</p>
+            </div>
+            <div class="pill" title="Armazenamento local no navegador">
+                <span class="dot"></span>
+                <span>Local</span>
+            </div>
+        </header>
+
+        <main class="grid">
+            <!-- Cadastro -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Nova tarefa</h2>
+                    <p class="hint">Preencha os detalhes e priorize sua atividade.</p>
+                </div>
+
+                <form id="form-tarefa" class="form">
+                    <div class="field">
+                        <label for="titulo">Título</label>
+                        <input id="titulo" name="titulo" type="text" placeholder="Ex: Terminar relatório"
+                            autocomplete="off" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="descricao">Descrição</label>
+                        <input id="descricao" name="descricao" type="text" placeholder="Detalhes adicionais..."
+                            autocomplete="off" />
+                    </div>
+
+                    <div class="row">
+                        <div class="field">
+                            <label for="prioridade">Prioridade</label>
+                            <select id="prioridade" name="prioridade" required>
+                                <option value="Alta">🔴 Alta</option>
+                                <option value="Media" selected>🟡 Média</option>
+                                <option value="Baixa">🟢 Baixa</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="data-limite">Data limite</label>
+                            <input id="data-limite" name="data-limite" type="date" required />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="Pessoal">Pessoal</option>
+                            <option value="Trabalho">Trabalho</option>
+                            <option value="Estudos">Estudos</option>
+                            <option value="Saúde">Saúde</option>
+                            <option value="Financeiro">Financeiro</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn primary">Adicionar</button>
+                        <button type="button" id="btn-limpar" class="btn ghost">Limpar</button>
+                    </div>
+
+                    <div id="msg" class="msg" aria-live="polite"></div>
+                </form>
+            </section>
+
+            <!-- Filtros -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Filtros</h2>
+                    <p class="hint">Refine a lista conforme suas necessidades.</p>
+                </div>
+
+                <div class="field compact">
+                    <label for="buscar">Buscar</label>
+                    <input id="buscar" type="text" placeholder="Digite parte do título..." />
+                </div>
+
+                <div class="row">
+                    <div class="field compact">
+                        <label for="filtro-categoria">Categoria</label>
+                        <select id="filtro-categoria">
+                            <option value="Todas">Todas</option>
+                            <option value="Pessoal">Pessoal</option>
+                            <option value="Trabalho">Trabalho</option>
+                            <option value="Estudos">Estudos</option>
+                            <option value="Saúde">Saúde</option>
+                            <option value="Financeiro">Financeiro</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="field compact">
+                        <label for="filtro-status">Status</label>
+                        <select id="filtro-status">
+                            <option value="Todas">Todas</option>
+                            <option value="Pendente">Pendente</option>
+                            <option value="Em Progresso">Em Progresso</option>
+                            <option value="Concluída">Concluída</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="toolbar">
+                    <button type="button" id="btn-apagar-tudo" class="btn danger">Apagar tudo</button>
+                </div>
+            </section>
+
+            <!-- Lista de tarefas -->
+            <section class="card full">
+                <div class="card-header">
+                    <h2>Suas tarefas</h2>
+                    <p class="hint">Lista completa com prioridades e status.</p>
+                </div>
+
+                <div class="table-controls">
+                    <div class="field compact">
+                        <label for="ordenar">Ordenar por</label>
+                        <select id="ordenar">
+                            <option value="data_asc">Data (mais próxima)</option>
+                            <option value="data_desc">Data (mais distante)</option>
+                            <option value="prioridade_asc">Prioridade (Alta → Baixa)</option>
+                            <option value="prioridade_desc">Prioridade (Baixa → Alta)</option>
+                            <option value="titulo_asc">Título (A–Z)</option>
+                            <option value="titulo_desc">Título (Z–A)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-head">
+                    <span>Título</span>
+                    <span>Prioridade</span>
+                    <span>Data</span>
+                    <span>Status</span>
+                    <span class="right">Ações</span>
+                </div>
+
+                <div id="lista-container" class="table"></div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <span>Feito para organizar sua vida • Sem login • Sem servidor</span>
+        </footer>
+    </div>
+
+    <!-- Modal de edição -->
+    <dialog id="dlg-editar" class="dialog">
+        <form method="dialog" class="dialog-card" id="form-editar">
+            <div class="dialog-head">
+                <h3>Editar tarefa</h3>
+                <button class="icon-btn" value="cancel" aria-label="Fechar">✕</button>
+            </div>
+
+            <div class="form">
+                <div class="field">
+                    <label for="edit-titulo">Título</label>
+                    <input id="edit-titulo" type="text" required />
+                </div>
+
+                <div class="field">
+                    <label for="edit-descricao">Descrição</label>
+                    <input id="edit-descricao" type="text" />
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="edit-prioridade">Prioridade</label>
+                        <select id="edit-prioridade" required>
+                            <option value="Alta">🔴 Alta</option>
+                            <option value="Media">🟡 Média</option>
+                            <option value="Baixa">🟢 Baixa</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="edit-data-limite">Data limite</label>
+                        <input id="edit-data-limite" type="date" required />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="edit-categoria">Categoria</label>
+                    <select id="edit-categoria" required>
+                        <option value="Pessoal">Pessoal</option>
+                        <option value="Trabalho">Trabalho</option>
+                        <option value="Estudos">Estudos</option>
+                        <option value="Saúde">Saúde</option>
+                        <option value="Financeiro">Financeiro</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="edit-status">Status</label>
+                    <select id="edit-status" required>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Progresso">Em Progresso</option>
+                        <option value="Concluída">Concluída</option>
+                    </select>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn primary">Salvar</button>
+                    <button type="button" id="btn-cancelar-edicao" class="btn ghost">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="app.js" defer></script>
+</body>
+
+</html>
